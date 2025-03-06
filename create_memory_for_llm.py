@@ -32,6 +32,7 @@ def create_chunks(documents):
 
     return chunks
 
+text_chunks = create_chunks(load_pdf_files(DATA_path))
 # step-3: create a vector embeddings
 
 def get_embeddings_model():
@@ -45,4 +46,11 @@ embedding_model = get_embeddings_model()
 
 # step-4: create a memory for llm
 
+DB_FAISS_path = "vector_store/db_faiss"
 
+db = FAISS.from_documents(text_chunks, 
+                        embedding_model)
+
+db.save_local(DB_FAISS_path)
+
+print("Memory for LLM created successfully")
